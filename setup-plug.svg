@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none" role="img" aria-labelledby="icon-plug-title"><title id="icon-plug-title">Dimensional plug and cable with a warm power symbol</title><defs>
+      <linearGradient id="icon-plug-top" x1="0" y1="0" x2=".6" y2="1"><stop stop-color="#676C72"/><stop offset=".36" stop-color="#363B41"/><stop offset="1" stop-color="#20252A"/></linearGradient>
+      <linearGradient id="icon-plug-front" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#394047"/><stop offset="1" stop-color="#151A1F"/></linearGradient>
+      <linearGradient id="icon-plug-metal" x1="0" y1="0" x2="1" y2=".25"><stop stop-color="#687078"/><stop offset=".3" stop-color="#C6CBD0"/><stop offset=".48" stop-color="#F4F2E8"/><stop offset=".7" stop-color="#A1A8AF"/><stop offset="1" stop-color="#5A646F"/></linearGradient>
+      <radialGradient id="icon-plug-lens" cx=".38" cy=".28" r=".8"><stop stop-color="#FFFDF0"/><stop offset=".25" stop-color="#FFF1BE"/><stop offset=".65" stop-color="#FFD15C"/><stop offset="1" stop-color="#DF9624"/></radialGradient>
+      <radialGradient id="icon-plug-halo"><stop stop-color="#FFB82F" stop-opacity=".35"/><stop offset=".55" stop-color="#FFB82F" stop-opacity=".12"/><stop offset="1" stop-color="#FFB82F" stop-opacity="0"/></radialGradient>
+      <linearGradient id="icon-plug-beam" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#FFBA38" stop-opacity=".37"/><stop offset="1" stop-color="#FFBA38" stop-opacity="0"/></linearGradient>
+      <linearGradient id="icon-plug-tree" x1="0" y1="0" x2=".45" y2="1"><stop stop-color="#34393E"/><stop offset=".64" stop-color="#4C4D47"/><stop offset="1" stop-color="#C09546"/></linearGradient>
+      <linearGradient id="icon-plug-bark" x1="0" y1="0" x2="1" y2=".1"><stop stop-color="#282A2A"/><stop offset=".5" stop-color="#8A6C35"/><stop offset=".74" stop-color="#D9AF59"/><stop offset="1" stop-color="#6F592E"/></linearGradient>
+      <filter id="icon-plug-shadow" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="2.5"/></filter>
+    </defs><ellipse cx="83" cy="134" rx="49" ry="10" fill="#1B252C" opacity=".13" filter="url(#icon-plug-shadow)"/><ellipse cx="103" cy="55" rx="42" ry="42" fill="url(#icon-plug-halo)"/><path d="M73 96C62 111 37 91 28 110C19 130 45 137 59 128" stroke="#1B232C" stroke-width="8" stroke-linecap="round"/><path d="M73 95C62 110 38 90 29 109C23 121 30 127 39 130" stroke="#626F7B" stroke-width="1.6" stroke-linecap="round"/><g transform="translate(90 76) rotate(32)">
+      <rect x="-19" y="-44" width="8" height="26" rx="3" fill="url(#icon-plug-metal)" stroke="#606D78" stroke-width=".6"/>
+      <rect x="11" y="-44" width="8" height="26" rx="3" fill="url(#icon-plug-metal)" stroke="#606D78" stroke-width=".6"/>
+      <path d="M-15-40V-24M15-40V-24" stroke="#FEF4C8" stroke-width="1.3" stroke-linecap="round"/>
+      <rect x="-27" y="-19" width="54" height="50" rx="14" fill="#1A222A" stroke="#505E69" stroke-width=".8"/>
+      <rect x="-27" y="-24" width="54" height="46" rx="14" fill="url(#icon-plug-top)" stroke="#87939B" stroke-width=".75"/>
+      <path d="M-18-18Q0-24 18-18" stroke="#A3ADB3" stroke-width="1" stroke-linecap="round" opacity=".6"/>
+      <rect x="-9" y="25" width="18" height="19" rx="4" fill="#2B3540" stroke="#687581" stroke-width=".65"/>
+      <path d="M-8 31H8M-8 36H8" stroke="#161F28" stroke-width="1.5"/>
+      <path d="M3-13L-10 3H-1L-4 14L11-4H2Z" fill="#FFBA38"/>
+    </g><path d="M123 34L132 28M132 50L144 49M112 24L114 15" stroke="#F4B640" stroke-width="2.4" stroke-linecap="round"/></svg>
