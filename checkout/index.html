@@ -39,15 +39,17 @@
         </section>
         <section aria-labelledby="shipping">
           <h2 id="shipping">Shipping method</h2>
-          <p class="notice">Available shipping options and charges are confirmed at payment.</p>
+          <p class="notice">Delivery to United States addresses.</p>
         </section>
         <section aria-labelledby="payment">
           <h2 id="payment">Payment</h2>
-          <div class="payment-method"><strong>Stripe Checkout</strong><p>Enter your payment details securely on Stripe.</p></div>
-          <button id="pay" type="submit">Continue to payment</button>
+          <div class="payment-method"><strong>Credit or debit card</strong><p>Enter your card details below after completing your delivery address.</p></div>
+          <button id="pay" type="submit">Load card form</button>
           <p id="payment-status" class="status" role="status"></p>
         </section>
       </form>
+      <div id="card-form"></div>
+      <p id="card-status" role="status"></p>
       <p id="empty" hidden>Your cart is empty. <a href="../#shop">Shop Lumina Garden</a></p>
     </section>
     <aside class="summary" aria-labelledby="order-summary">
@@ -55,8 +57,7 @@
       <ul id="items"></ul>
       <dl>
         <div><dt>Subtotal</dt><dd id="subtotal"></dd></div>
-        <div><dt>Shipping and tax</dt><dd>Calculated at payment</dd></div>
-        <div class="total"><dt>Total before shipping and tax</dt><dd><small>USD</small> <strong id="total"></strong></dd></div>
+        <div class="total"><dt>Total</dt><dd><small>USD</small> <strong id="total"></strong></dd></div>
       </dl>
     </aside>
   </main>

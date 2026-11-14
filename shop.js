@@ -113,7 +113,7 @@ for (const item of config.addons) {
 }
 el('minus').onclick=()=>{quantity=Math.max(1,quantity-1);renderSelection();};
 el('plus').onclick=()=>{quantity=Math.min(99,quantity+1);renderSelection();};
-el('market-note').textContent=config.preview?'Preview pricing · USD. Checkout is awaiting configuration.':'Prices shown in '+config.currency+'.';
+el('market-note').textContent=config.preview?'Preview pricing · USD.':'Prices shown in '+config.currency+'.';
 function renderBag() {
   try { localStorage.setItem('lumina-bag',JSON.stringify([...bag])); } catch {}
   const lines=el('lines');

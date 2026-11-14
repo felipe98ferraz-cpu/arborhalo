@@ -28,7 +28,7 @@ const items = readItems();
 const form = byId('checkout-form');
 const pay = byId('pay');
 const status = byId('payment-status');
-const configured = Boolean(config.checkoutEndpoint && !config.preview);
+const endpoint = new URL('../api/cooud', location.href);
 let subtotal = 0;
 
 for (const [id, quantity] of items) {
@@ -69,38 +69,83 @@ for (const state of states.split('|')) {
   byId('state').add(new Option(name, code));
 }
 
-if (!configured) {
-  pay.disabled = true;
-  status.textContent = 'Payment is currently unavailable.';
+let sdkPromise;
+let lastBody;
+let attemptId;
+
+function loadElements() {
+  sdkPromise ??= new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.cooud.com/cdn/elements/v1.js';
+    script.onload = () => window.__CooudElements__?.mount
+      ? resolve(window.__CooudElements__)
+      : reject(new Error('Elements unavailable'));
+    script.onerror = reject;
+    document.head.append(script);
+  }).catch(error => {
+    sdkPromise = undefined;
+    throw error;
+  });
+  return sdkPromise;
+}
+
+async function request(payload) {
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  if (!response.ok) throw new Error('Payment service unavailable');
+  return response.json();
 }
 
 form.addEventListener('submit', async event => {
   event.preventDefault();
-  if (!configured || !items.size || pay.disabled) return;
+  if (!items.size || pay.disabled) return;
   pay.disabled = true;
-  status.textContent = 'Opening Stripe Checkout…';
-  const { email, firstName, lastName, company, phone, ...address } = Object.fromEntries(new FormData(form));
+  status.textContent = 'Loading the secure card form…';
+  const fields = Object.fromEntries(new FormData(form));
+  const cardStatus = byId('card-status');
+  const container = byId('card-form');
   try {
-    const response = await fetch(config.checkoutEndpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        items: [...items].map(([id, quantity]) => ({ id, quantity })),
-        email,
-        shipping: { firstName, lastName, company, phone, address: { ...address, country: 'US' } }
-      })
+    const sdk = await loadElements();
+    const data = {
+      fields,
+      items: [...items].map(([id, quantity]) => ({ id, quantity })),
+      elementsVersion: sdk.version
+    };
+    const body = JSON.stringify(data);
+    if (body !== lastBody) {
+      attemptId = crypto.randomUUID();
+      lastBody = body;
+    }
+    const payment = await request({ ...data, attemptId });
+    for (const input of form.elements) input.disabled = true;
+    status.textContent = '';
+    await sdk.mount({
+      container,
+      sessionId: payment.id,
+      elementToken: payment.elementToken,
+      sessionSecret: payment.sessionSecret,
+      appearance: payment.appearance,
+      apiBaseUrl: 'https://api.cooud.com',
+      compatDate: '2026-09-01',
+      onSuccess: async () => {
+        cardStatus.textContent = 'Checking payment status…';
+        try {
+          const result = await request({ receipt: payment.receipt });
+          cardStatus.textContent = result.paid ? 'Payment confirmed.' : 'Payment confirmation is pending.';
+        } catch {
+          cardStatus.textContent = 'Payment confirmation is pending.';
+        }
+      },
+      onError: () => {
+        cardStatus.textContent = 'Payment could not be confirmed. Check the card form for details.';
+      }
     });
-    if (!response.ok) throw new Error('Checkout unavailable');
-    const { url } = await response.json();
-    const stripe = new URL(url);
-    if (stripe.origin !== 'https://checkout.stripe.com') throw new Error('Invalid checkout URL');
-    location.assign(stripe.href);
   } catch {
-    status.textContent = 'Payment could not start. Please try again.';
-    pay.disabled = false;
+    container.replaceChildren();
+    for (const input of form.elements) input.disabled = false;
+    status.textContent = 'The card form is temporarily unavailable. Please try again.';
   }
-});
-
-addEventListener('pageshow', event => {
-  if (event.persisted) location.reload();
 });

@@ -2,7 +2,6 @@
 export const config = {
   currency: 'USD',
   preview: true,
-  checkoutEndpoint: '',
   campaign: null,
   bundles: [
     { id:'one', trees:1, title:'One Tree', cents:4999, compareCents:19999, badge:'Start here', description:'Start with one tree as the focal point.' },
