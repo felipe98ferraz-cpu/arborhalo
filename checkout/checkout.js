@@ -159,6 +159,7 @@ async function preparePayment() {
       }
     });
     mounted = true;
+    byId('payment-hint').hidden = true;
   } catch {
     container.replaceChildren();
     for (const input of form.elements) input.disabled = false;
