@@ -161,38 +161,17 @@ el('solar-price').textContent = money(solarPanel.cents);
 el('solar-add').onclick = () => {addItem(solarPanel.id, 1); openBag();};
 el('kit-add').onclick=()=>{addItem(selected.id,1);openBag();};
 el('open-bag').onclick=openBag;
-async function checkout(items) {
-  if (!config.checkoutEndpoint || config.preview) {
-    openBag();
-    el('checkout-status').textContent='Stripe Checkout is awaiting store configuration. No payment was taken.';
-    return;
-  }
-  const controls=[el('checkout'),el('buy')];
-  controls.forEach(button=>button.disabled=true);
-  try {
-    const response=await fetch(config.checkoutEndpoint,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:items.map(([id,quantity])=>({id,quantity}))})
-    });
-    if(!response.ok) throw new Error('Checkout unavailable');
-    const result=await response.json();
-    const url=new URL(result.url);
-    if(url.origin!=='https://checkout.stripe.com') throw new Error('Invalid checkout URL');
-    location.assign(url.href);
-  } catch {
-    openBag();
-    el('checkout-status').textContent='Checkout could not start. Please try again.';
-  } finally {
-    controls.forEach(button=>button.disabled=false);
-    renderBag();
-  }
-}
-el('checkout').onclick=()=>checkout([...bag]);
-el('buy').onclick=()=>{
-  const items=currentItems();
-  if (!config.checkoutEndpoint || config.preview) items.forEach(([id,qty])=>addItem(id,qty));
-  checkout(items);
+el('checkout').onclick = () => {
+  location.assign('./checkout/?source=bag');
 };
+el('buy').onclick = () => {
+  const items = new URLSearchParams();
+  for (const [id, qty] of currentItems()) items.append(id, qty);
+  location.assign('./checkout/?' + items);
+};
+addEventListener('pageshow', event => {
+  if (event.persisted) location.reload();
+});
 document.querySelectorAll('[data-close]').forEach(button=>button.onclick=()=>el(button.dataset.close).close());
 el('menu').onclick=()=>el('menu').setAttribute('aria-expanded',el('nav').classList.toggle('open'));
 el('nav').querySelectorAll('a').forEach(link=>link.onclick=()=>{el('nav').classList.remove('open');el('menu').setAttribute('aria-expanded','false');});

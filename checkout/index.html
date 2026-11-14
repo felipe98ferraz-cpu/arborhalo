@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout | Lumina Garden</title>
+  <link rel="stylesheet" href="checkout.css">
+  <script type="module" src="checkout.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="../">Lumina Garden</a>
+    <span>Checkout</span>
+  </header>
+  <main class="layout">
+    <section class="details" aria-label="Checkout details">
+      <a class="back" href="../">← Back to store</a>
+      <form id="checkout-form" hidden>
+        <section aria-labelledby="contact">
+          <h2 id="contact">Contact</h2>
+          <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        </section>
+        <section aria-labelledby="delivery">
+          <h2 id="delivery">Delivery</h2>
+          <label>Country/Region<input value="United States" autocomplete="country-name" readonly></label>
+          <div class="pair">
+            <label>First name<input name="firstName" autocomplete="shipping given-name" required></label>
+            <label>Last name<input name="lastName" autocomplete="shipping family-name" required></label>
+          </div>
+          <label>Company (optional)<input name="company" autocomplete="shipping organization"></label>
+          <label>Street address<input name="line1" autocomplete="shipping address-line1" required></label>
+          <label>Apartment, suite, etc. (optional)<input name="line2" autocomplete="shipping address-line2"></label>
+          <label>City<input name="city" autocomplete="shipping address-level2" required></label>
+          <div class="pair">
+            <label>State<select id="state" name="state" autocomplete="shipping address-level1" required><option value="">Select state</option></select></label>
+            <label>ZIP code<input name="postalCode" autocomplete="shipping postal-code" inputmode="numeric" maxlength="10" pattern="[0-9]{5}(-[0-9]{4})?" title="Enter a 5-digit ZIP code or ZIP+4" required></label>
+          </div>
+          <label>Phone (optional)<input name="phone" type="tel" autocomplete="shipping tel" placeholder="(555) 123-4567"></label>
+        </section>
+        <section aria-labelledby="shipping">
+          <h2 id="shipping">Shipping method</h2>
+          <p class="notice">Available shipping options and charges are confirmed at payment.</p>
+        </section>
+        <section aria-labelledby="payment">
+          <h2 id="payment">Payment</h2>
+          <div class="payment-method"><strong>Stripe Checkout</strong><p>Enter your payment details securely on Stripe.</p></div>
+          <button id="pay" type="submit">Continue to payment</button>
+          <p id="payment-status" class="status" role="status"></p>
+        </section>
+      </form>
+      <p id="empty" hidden>Your cart is empty. <a href="../#shop">Shop Lumina Garden</a></p>
+    </section>
+    <aside class="summary" aria-labelledby="order-summary">
+      <h2 id="order-summary">Order summary</h2>
+      <ul id="items"></ul>
+      <dl>
+        <div><dt>Subtotal</dt><dd id="subtotal"></dd></div>
+        <div><dt>Shipping and tax</dt><dd>Calculated at payment</dd></div>
+        <div class="total"><dt>Total before shipping and tax</dt><dd><small>USD</small> <strong id="total"></strong></dd></div>
+      </dl>
+    </aside>
+  </main>
+</body>
+</html>
