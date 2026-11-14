@@ -26,7 +26,6 @@ function readItems() {
 
 const items = readItems();
 const form = byId('checkout-form');
-const pay = byId('pay');
 const status = byId('payment-status');
 const endpoint = new URL('../api/cooud', location.href);
 let subtotal = 0;
@@ -99,10 +98,19 @@ async function request(payload) {
   return response.json();
 }
 
-form.addEventListener('submit', async event => {
-  event.preventDefault();
-  if (!items.size || pay.disabled) return;
-  pay.disabled = true;
+let mountTimer;
+let loading = false;
+let mounted = false;
+
+function schedulePayment() {
+  clearTimeout(mountTimer);
+  if (!items.size || mounted || loading || !form.matches(':valid')) return;
+  mountTimer = setTimeout(preparePayment, 700);
+}
+
+async function preparePayment() {
+  if (loading || mounted || !form.matches(':valid')) return;
+  loading = true;
   status.textContent = 'Loading the secure card form…';
   const fields = Object.fromEntries(new FormData(form));
   const cardStatus = byId('card-status');
@@ -120,6 +128,13 @@ form.addEventListener('submit', async event => {
       lastBody = body;
     }
     const payment = await request({ ...data, attemptId });
+    const currentFields = Object.fromEntries(new FormData(form));
+    if (JSON.stringify(currentFields) !== JSON.stringify(fields)) {
+      loading = false;
+      status.textContent = '';
+      schedulePayment();
+      return;
+    }
     for (const input of form.elements) input.disabled = true;
     status.textContent = '';
     await sdk.mount({
@@ -127,7 +142,7 @@ form.addEventListener('submit', async event => {
       sessionId: payment.id,
       elementToken: payment.elementToken,
       sessionSecret: payment.sessionSecret,
-      appearance: payment.appearance,
+      appearance: { ...payment.appearance, theme: 'light' },
       apiBaseUrl: 'https://api.cooud.com',
       compatDate: '2026-09-01',
       onSuccess: async () => {
@@ -143,9 +158,20 @@ form.addEventListener('submit', async event => {
         cardStatus.textContent = 'Payment could not be confirmed. Check the card form for details.';
       }
     });
+    mounted = true;
   } catch {
     container.replaceChildren();
     for (const input of form.elements) input.disabled = false;
     status.textContent = 'The card form is temporarily unavailable. Please try again.';
   }
+  loading = false;
+}
+
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  schedulePayment();
 });
+form.addEventListener('input', schedulePayment);
+form.addEventListener('change', schedulePayment);
+addEventListener('pageshow', schedulePayment);
+schedulePayment();

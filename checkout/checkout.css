@@ -38,3 +38,5 @@ dd { margin: 0; text-align: right; }
 
 .masthead .brand{display:inline-flex;background:#191817;padding:9px 12px;border-radius:8px}
 .masthead .brand img{display:block;width:clamp(125px,38vw,196px);height:auto}
+
+.payment-copy{margin:0 0 14px;color:#53514d}
