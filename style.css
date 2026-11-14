@@ -118,3 +118,5 @@
   .color-mood { grid-template-columns: 1fr; }
   .color-mood figure img { position: static; height: auto; aspect-ratio: 4 / 5; }
 }
+
+.brand img{display:block;width:clamp(125px,30vw,196px);height:auto}

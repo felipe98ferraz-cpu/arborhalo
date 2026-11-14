@@ -35,3 +35,6 @@ dd { margin: 0; text-align: right; }
   .summary { order: -1; border-left: 0; border-bottom: 1px solid #e6e4df; padding: 24px max(20px, calc((100% - 510px) / 2)); }
   .details { align-self: center; padding: 24px max(20px, calc((100% - 510px) / 2)) 40px; }
 }
+
+.masthead .brand{display:inline-flex;background:#191817;padding:9px 12px;border-radius:8px}
+.masthead .brand img{display:block;width:clamp(125px,38vw,196px);height:auto}
